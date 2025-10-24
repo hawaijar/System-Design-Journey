@@ -1,0 +1,1767 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Daily exploration of FAANG-level system design concepts">
+      
+      
+        <meta name="author" content="Sushil Mayengbam">
+      
+      
+        <link rel="canonical" href="https://hawaijar.github.io/System-Design-Journey/topics/scalability-patterns/">
+      
+      
+        <link rel="prev" href="../interview-approach/">
+      
+      
+        <link rel="next" href="../../resources/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+    
+    
+      
+        <title>Scalability Patterns - System Design Journey</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.84d31ad4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#common-scalability-patterns" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="System Design Journey" class="md-header__button md-logo" aria-label="System Design Journey" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            System Design Journey
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Scalability Patterns
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../daily/" class="md-tabs__link">
+          
+  
+  
+  Daily Logs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Topics
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../resources/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Resources
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  About
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="System Design Journey" class="md-nav__button md-logo" aria-label="System Design Journey" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    System Design Journey
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Daily Logs
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Daily Logs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../daily/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../daily/2024-10-24/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Day 1 (Oct 24)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Topics
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Topics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../building-blocks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Building Blocks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interview-approach/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Interview Approach
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Scalability Patterns
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Scalability Patterns
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#scaling-journey-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scaling Journey Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-1-vertical-scaling-scale-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 1: Vertical Scaling (Scale Up)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-2-horizontal-scaling-scale-out" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 2: Horizontal Scaling (Scale Out)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-3-caching-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 3: Caching Strategy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern 3: Caching Strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cache-aside-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cache Aside Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#write-through-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      Write-Through Cache
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cache Layers
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-4-database-replication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 4: Database Replication
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern 4: Database Replication">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#master-slave-replication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Master-Slave Replication
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-5-database-sharding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 5: Database Sharding
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern 5: Database Sharding">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#horizontal-partitioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Horizontal Partitioning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#geographic-sharding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Geographic Sharding
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-6-microservices-decomposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 6: Microservices Decomposition
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern 6: Microservices Decomposition">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#monolith-vs-microservices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monolith vs Microservices
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-7-event-driven-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 7: Event-Driven Architecture
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-8-cqrs-command-query-responsibility-segregation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 8: CQRS (Command Query Responsibility Segregation)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-9-circuit-breaker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 9: Circuit Breaker
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-10-rate-limiting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 10: Rate Limiting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern 10: Rate Limiting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#token-bucket-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Token Bucket Algorithm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sliding-window" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sliding Window
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-11-cdn-edge-computing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 11: CDN &amp; Edge Computing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-12-auto-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 12: Auto-Scaling
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scaling-comparison-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scaling Comparison Matrix
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-world-example-scaling-twitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Example: Scaling Twitter
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-takeaways" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Takeaways
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Resources
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#scaling-journey-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scaling Journey Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-1-vertical-scaling-scale-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 1: Vertical Scaling (Scale Up)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-2-horizontal-scaling-scale-out" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 2: Horizontal Scaling (Scale Out)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-3-caching-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 3: Caching Strategy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern 3: Caching Strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cache-aside-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cache Aside Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#write-through-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      Write-Through Cache
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cache Layers
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-4-database-replication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 4: Database Replication
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern 4: Database Replication">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#master-slave-replication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Master-Slave Replication
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-5-database-sharding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 5: Database Sharding
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern 5: Database Sharding">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#horizontal-partitioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Horizontal Partitioning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#geographic-sharding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Geographic Sharding
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-6-microservices-decomposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 6: Microservices Decomposition
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern 6: Microservices Decomposition">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#monolith-vs-microservices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monolith vs Microservices
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-7-event-driven-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 7: Event-Driven Architecture
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-8-cqrs-command-query-responsibility-segregation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 8: CQRS (Command Query Responsibility Segregation)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-9-circuit-breaker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 9: Circuit Breaker
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-10-rate-limiting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 10: Rate Limiting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern 10: Rate Limiting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#token-bucket-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Token Bucket Algorithm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sliding-window" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sliding Window
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-11-cdn-edge-computing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 11: CDN &amp; Edge Computing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-12-auto-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 12: Auto-Scaling
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scaling-comparison-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scaling Comparison Matrix
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-world-example-scaling-twitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Example: Scaling Twitter
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-takeaways" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Takeaways
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="common-scalability-patterns">Common Scalability Patterns<a class="headerlink" href="#common-scalability-patterns" title="Permanent link">&para;</a></h1>
+<p>Proven approaches to scale systems from thousands to millions of users.</p>
+<hr />
+<h2 id="scaling-journey-overview">Scaling Journey Overview<a class="headerlink" href="#scaling-journey-overview" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>graph LR
+    S1[1K Users&lt;br/&gt;Single Server] --&gt; S2[10K Users&lt;br/&gt;Add Cache + DB]
+    S2 --&gt; S3[100K Users&lt;br/&gt;Load Balancer&lt;br/&gt;+ Replicas]
+    S3 --&gt; S4[1M Users&lt;br/&gt;Sharding&lt;br/&gt;+ CDN]
+    S4 --&gt; S5[10M+ Users&lt;br/&gt;Microservices&lt;br/&gt;+ Multi-region]
+
+    style S1 fill:#9f9
+    style S2 fill:#9cf
+    style S3 fill:#ff9
+    style S4 fill:#f9c
+    style S5 fill:#f9f</code></pre>
+<hr />
+<h2 id="pattern-1-vertical-scaling-scale-up">Pattern 1: Vertical Scaling (Scale Up)<a class="headerlink" href="#pattern-1-vertical-scaling-scale-up" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>graph TB
+    subgraph "Before: Small Server"
+        B1[4 CPU cores&lt;br/&gt;8 GB RAM&lt;br/&gt;100 GB SSD]
+    end
+
+    subgraph "After: Bigger Server"
+        A1[16 CPU cores&lt;br/&gt;64 GB RAM&lt;br/&gt;1 TB SSD]
+    end
+
+    B1 -.-&gt;|Upgrade| A1
+
+    style B1 fill:#ff9
+    style A1 fill:#9f9</code></pre>
+<p><strong>Pros:</strong> Simple, no code changes
+<strong>Cons:</strong> Hardware limits, single point of failure, expensive
+<strong>Use When:</strong> Early stage, quick fix needed</p>
+<hr />
+<h2 id="pattern-2-horizontal-scaling-scale-out">Pattern 2: Horizontal Scaling (Scale Out)<a class="headerlink" href="#pattern-2-horizontal-scaling-scale-out" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>graph TB
+    LB[Load Balancer]
+
+    LB --&gt; S1[Server 1&lt;br/&gt;4 cores, 8GB]
+    LB --&gt; S2[Server 2&lt;br/&gt;4 cores, 8GB]
+    LB --&gt; S3[Server 3&lt;br/&gt;4 cores, 8GB]
+    LB --&gt; S4[Server 4&lt;br/&gt;4 cores, 8GB]
+
+    style LB fill:#f9f,stroke:#333,stroke-width:3px
+    style S1 fill:#9f9
+    style S2 fill:#9f9
+    style S3 fill:#9f9
+    style S4 fill:#9f9</code></pre>
+<p><strong>Pros:</strong> No limits, redundancy, cost-effective
+<strong>Cons:</strong> Complexity, stateless requirements
+<strong>Use When:</strong> Growth expected, high availability needed</p>
+<hr />
+<h2 id="pattern-3-caching-strategy">Pattern 3: Caching Strategy<a class="headerlink" href="#pattern-3-caching-strategy" title="Permanent link">&para;</a></h2>
+<h3 id="cache-aside-pattern">Cache Aside Pattern<a class="headerlink" href="#cache-aside-pattern" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant App
+    participant Cache
+    participant DB
+
+    App-&gt;&gt;Cache: Get(key)
+    alt Cache Hit
+        Cache--&gt;&gt;App: Return value
+    else Cache Miss
+        Cache--&gt;&gt;App: null
+        App-&gt;&gt;DB: Query
+        DB--&gt;&gt;App: Data
+        App-&gt;&gt;Cache: Set(key, data)
+    end</code></pre>
+<h3 id="write-through-cache">Write-Through Cache<a class="headerlink" href="#write-through-cache" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant App
+    participant Cache
+    participant DB
+
+    App-&gt;&gt;Cache: Write(key, value)
+    Cache-&gt;&gt;DB: Write to DB
+    DB--&gt;&gt;Cache: Ack
+    Cache--&gt;&gt;App: Success</code></pre>
+<h3 id="cache-layers">Cache Layers<a class="headerlink" href="#cache-layers" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TB
+    Request[Request] --&gt; L1{Browser Cache}
+    L1 --&gt;|Miss| L2{CDN Cache}
+    L2 --&gt;|Miss| L3{Server Cache&lt;br/&gt;Redis/Memcached}
+    L3 --&gt;|Miss| L4{DB Query Cache}
+    L4 --&gt;|Miss| DB[(Database)]
+
+    style L1 fill:#9cf
+    style L2 fill:#9cf
+    style L3 fill:#9cf
+    style L4 fill:#9cf</code></pre>
+<hr />
+<h2 id="pattern-4-database-replication">Pattern 4: Database Replication<a class="headerlink" href="#pattern-4-database-replication" title="Permanent link">&para;</a></h2>
+<h3 id="master-slave-replication">Master-Slave Replication<a class="headerlink" href="#master-slave-replication" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TB
+    App[Application]
+
+    App --&gt;|Writes| M[(Master)]
+    App --&gt;|Reads| R1[(Slave 1)]
+    App --&gt;|Reads| R2[(Slave 2)]
+    App --&gt;|Reads| R3[(Slave 3)]
+
+    M -.-&gt;|Async Replication| R1
+    M -.-&gt;|Async Replication| R2
+    M -.-&gt;|Async Replication| R3
+
+    style M fill:#f96,stroke:#333,stroke-width:3px
+    style R1 fill:#9f9
+    style R2 fill:#9f9
+    style R3 fill:#9f9</code></pre>
+<p><strong>Read/Write Split:</strong>
+- Master: Handle all writes
+- Slaves: Handle read queries
+- Ratio: Often 90% reads, 10% writes</p>
+<hr />
+<h2 id="pattern-5-database-sharding">Pattern 5: Database Sharding<a class="headerlink" href="#pattern-5-database-sharding" title="Permanent link">&para;</a></h2>
+<h3 id="horizontal-partitioning">Horizontal Partitioning<a class="headerlink" href="#horizontal-partitioning" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TB
+    Router{Shard Router&lt;br/&gt;Hash user_id}
+
+    Router --&gt;|user_id % 4 = 0| S0[(Shard 0&lt;br/&gt;Users 0,4,8...)]
+    Router --&gt;|user_id % 4 = 1| S1[(Shard 1&lt;br/&gt;Users 1,5,9...)]
+    Router --&gt;|user_id % 4 = 2| S2[(Shard 2&lt;br/&gt;Users 2,6,10...)]
+    Router --&gt;|user_id % 4 = 3| S3[(Shard 3&lt;br/&gt;Users 3,7,11...)]
+
+    style Router fill:#f9f,stroke:#333,stroke-width:3px</code></pre>
+<h3 id="geographic-sharding">Geographic Sharding<a class="headerlink" href="#geographic-sharding" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TB
+    Router{Geographic Router}
+
+    Router --&gt;|NA Users| US[(US Shard&lt;br/&gt;North America)]
+    Router --&gt;|EU Users| EU[(EU Shard&lt;br/&gt;Europe)]
+    Router --&gt;|APAC Users| ASIA[(ASIA Shard&lt;br/&gt;Asia Pacific)]
+
+    style Router fill:#f9f,stroke:#333,stroke-width:3px
+    style US fill:#9cf
+    style EU fill:#9cf
+    style ASIA fill:#9cf</code></pre>
+<hr />
+<h2 id="pattern-6-microservices-decomposition">Pattern 6: Microservices Decomposition<a class="headerlink" href="#pattern-6-microservices-decomposition" title="Permanent link">&para;</a></h2>
+<h3 id="monolith-vs-microservices">Monolith vs Microservices<a class="headerlink" href="#monolith-vs-microservices" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TB
+    subgraph "Monolith"
+        M[Single Application&lt;br/&gt;User + Order + Payment&lt;br/&gt;+ Inventory]
+        M --&gt; MDB[(Single DB)]
+    end
+
+    subgraph "Microservices"
+        GW[API Gateway]
+        GW --&gt; US[User Service]
+        GW --&gt; OS[Order Service]
+        GW --&gt; PS[Payment Service]
+        GW --&gt; IS[Inventory Service]
+
+        US --&gt; UD[(User DB)]
+        OS --&gt; OD[(Order DB)]
+        PS --&gt; PD[(Payment DB)]
+        IS --&gt; ID[(Inventory DB)]
+    end
+
+    style M fill:#f99
+    style GW fill:#9f9</code></pre>
+<p><strong>When to Use Microservices:</strong>
+- Large team (&gt;50 engineers)
+- Independent scaling needs
+- Different technology stacks
+- Domain complexity</p>
+<hr />
+<h2 id="pattern-7-event-driven-architecture">Pattern 7: Event-Driven Architecture<a class="headerlink" href="#pattern-7-event-driven-architecture" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>sequenceDiagram
+    participant Order Service
+    participant Event Bus
+    participant Payment Service
+    participant Inventory Service
+    participant Notification Service
+
+    Order Service-&gt;&gt;Event Bus: OrderCreated Event
+    Event Bus-&gt;&gt;Payment Service: Process Payment
+    Event Bus-&gt;&gt;Inventory Service: Reserve Items
+    Event Bus-&gt;&gt;Notification Service: Send Confirmation
+
+    Payment Service-&gt;&gt;Event Bus: PaymentCompleted
+    Inventory Service-&gt;&gt;Event Bus: ItemsReserved
+    Notification Service-&gt;&gt;Event Bus: EmailSent</code></pre>
+<p><strong>Benefits:</strong>
+- Loose coupling
+- Async processing
+- Easy to add new consumers
+- Event replay capability</p>
+<hr />
+<h2 id="pattern-8-cqrs-command-query-responsibility-segregation">Pattern 8: CQRS (Command Query Responsibility Segregation)<a class="headerlink" href="#pattern-8-cqrs-command-query-responsibility-segregation" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>graph TB
+    subgraph "Write Side (Commands)"
+        WC[Write Commands] --&gt; WDB[(Write DB&lt;br/&gt;Normalized)]
+        WDB --&gt; ES[Event Stream]
+    end
+
+    subgraph "Read Side (Queries)"
+        ES --&gt; R1[(Read Model 1&lt;br/&gt;Denormalized)]
+        ES --&gt; R2[(Read Model 2&lt;br/&gt;Cached)]
+        ES --&gt; R3[(Read Model 3&lt;br/&gt;Aggregated)]
+
+        R1 --&gt; RQ[Read Queries]
+        R2 --&gt; RQ
+        R3 --&gt; RQ
+    end
+
+    style WDB fill:#f96
+    style R1 fill:#9f9
+    style R2 fill:#9f9
+    style R3 fill:#9f9</code></pre>
+<p><strong>Use Cases:</strong>
+- Different read/write patterns
+- Complex queries needed
+- High read throughput
+- Reporting requirements</p>
+<hr />
+<h2 id="pattern-9-circuit-breaker">Pattern 9: Circuit Breaker<a class="headerlink" href="#pattern-9-circuit-breaker" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>stateDiagram-v2
+    [*] --&gt; Closed: Normal Operation
+
+    Closed --&gt; Open: Failures exceed threshold
+    Open --&gt; HalfOpen: Timeout expires
+    HalfOpen --&gt; Closed: Success
+    HalfOpen --&gt; Open: Failure
+
+    note right of Closed
+        Allow all requests
+        Track failures
+    end note
+
+    note right of Open
+        Reject all requests
+        Return fallback
+    end note
+
+    note right of HalfOpen
+        Allow limited requests
+        Test if recovered
+    end note</code></pre>
+<p><strong>Example Flow:</strong></p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant Service A
+    participant Circuit Breaker
+    participant Service B
+
+    Service A-&gt;&gt;Circuit Breaker: Request
+    alt Circuit Closed
+        Circuit Breaker-&gt;&gt;Service B: Forward request
+        Service B--&gt;&gt;Circuit Breaker: Response
+        Circuit Breaker--&gt;&gt;Service A: Response
+    else Circuit Open
+        Circuit Breaker--&gt;&gt;Service A: Fail fast (cached/default)
+    end</code></pre>
+<hr />
+<h2 id="pattern-10-rate-limiting">Pattern 10: Rate Limiting<a class="headerlink" href="#pattern-10-rate-limiting" title="Permanent link">&para;</a></h2>
+<h3 id="token-bucket-algorithm">Token Bucket Algorithm<a class="headerlink" href="#token-bucket-algorithm" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TB
+    subgraph "Token Bucket"
+        Bucket[Bucket&lt;br/&gt;Capacity: 100&lt;br/&gt;Current: 75]
+        Refill[Refill Rate&lt;br/&gt;10 tokens/sec]
+    end
+
+    Request1[Request 1] --&gt;|Consume token| Bucket
+    Request2[Request 2] --&gt;|Consume token| Bucket
+    Request3[Request 3] --&gt;|No tokens| Reject[429 Too Many Requests]
+
+    Refill -.-&gt;|Add tokens| Bucket
+
+    style Bucket fill:#9cf
+    style Reject fill:#f99</code></pre>
+<h3 id="sliding-window">Sliding Window<a class="headerlink" href="#sliding-window" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>gantt
+    title Rate Limit: 100 requests per minute
+    dateFormat ss
+    axisFormat %S
+
+    section Window 1
+    Requests (80) :00, 30s
+
+    section Window 2
+    Requests (50) :30, 30s
+
+    section Current
+    Allowed? 80*0.5 + 50 = 90 &lt; 100 ✅ :done, 30, 1s</code></pre>
+<hr />
+<h2 id="pattern-11-cdn-edge-computing">Pattern 11: CDN &amp; Edge Computing<a class="headerlink" href="#pattern-11-cdn-edge-computing" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>graph TB
+    subgraph "Global Distribution"
+        User1[User&lt;br/&gt;San Francisco] --&gt; Edge1[Edge Server&lt;br/&gt;US-West]
+        User2[User&lt;br/&gt;London] --&gt; Edge2[Edge Server&lt;br/&gt;EU-West]
+        User3[User&lt;br/&gt;Tokyo] --&gt; Edge3[Edge Server&lt;br/&gt;APAC]
+    end
+
+    Edge1 &amp; Edge2 &amp; Edge3 -.-&gt;|Cache Miss| Origin[Origin Server&lt;br/&gt;US-East]
+
+    Origin --&gt; S3[(Object Storage)]
+
+    style Edge1 fill:#9cf
+    style Edge2 fill:#9cf
+    style Edge3 fill:#9cf
+    style Origin fill:#f96</code></pre>
+<p><strong>Edge Caching Strategy:</strong>
+- Static assets: Cache 30 days
+- API responses: Cache 5-60 minutes
+- Dynamic content: Cache 0-5 minutes</p>
+<hr />
+<h2 id="pattern-12-auto-scaling">Pattern 12: Auto-Scaling<a class="headerlink" href="#pattern-12-auto-scaling" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>graph TB
+    Monitor[Metrics Monitor&lt;br/&gt;CPU, Memory, QPS]
+
+    Monitor --&gt; Decision{Threshold&lt;br/&gt;Exceeded?}
+
+    Decision --&gt;|CPU &gt; 70%| ScaleUp[Scale Up&lt;br/&gt;Add 2 instances]
+    Decision --&gt;|CPU &lt; 30%| ScaleDown[Scale Down&lt;br/&gt;Remove 1 instance]
+    Decision --&gt;|Normal| Wait[Continue Monitoring]
+
+    ScaleUp --&gt; Instances[Update Instance Count]
+    ScaleDown --&gt; Instances
+    Instances --&gt; Monitor
+
+    style Decision fill:#f9f
+    style ScaleUp fill:#9f9
+    style ScaleDown fill:#fc9</code></pre>
+<p><strong>Scaling Triggers:</strong>
+- CPU utilization &gt; 70%
+- Memory usage &gt; 80%
+- Request queue length &gt; 100
+- Custom metrics (e.g., order rate)</p>
+<hr />
+<h2 id="scaling-comparison-matrix">Scaling Comparison Matrix<a class="headerlink" href="#scaling-comparison-matrix" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>graph TB
+    subgraph "Scaling Approach Selection"
+        Start{Current Scale}
+
+        Start --&gt;|&lt; 10K users| V[Vertical Scaling&lt;br/&gt;+ Basic Caching]
+        Start --&gt;|10K-100K| H[Horizontal Scaling&lt;br/&gt;+ DB Replicas&lt;br/&gt;+ CDN]
+        Start --&gt;|100K-1M| S[Sharding&lt;br/&gt;+ Microservices&lt;br/&gt;+ Message Queues]
+        Start --&gt;|&gt; 1M| D[Multi-Region&lt;br/&gt;+ Edge Computing&lt;br/&gt;+ Auto-Scaling]
+    end
+
+    style V fill:#9f9
+    style H fill:#9cf
+    style S fill:#ff9
+    style D fill:#f9c</code></pre>
+<hr />
+<h2 id="real-world-example-scaling-twitter">Real-World Example: Scaling Twitter<a class="headerlink" href="#real-world-example-scaling-twitter" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>graph TB
+    subgraph "User Actions"
+        Post[Post Tweet]
+        Read[Read Timeline]
+    end
+
+    subgraph "Write Path"
+        Post --&gt; WLB[Write Load Balancer]
+        WLB --&gt; API1[API Server]
+        API1 --&gt; WDB[(Tweet DB Shard)]
+        API1 --&gt; Cache[Redis Cache]
+        API1 --&gt; MQ[Message Queue]
+        MQ --&gt; Worker[Fan-out Worker]
+        Worker --&gt; Timeline[(Timeline Cache)]
+    end
+
+    subgraph "Read Path"
+        Read --&gt; RLB[Read Load Balancer]
+        RLB --&gt; API2[API Server]
+        API2 --&gt; Timeline
+        Timeline -.-&gt;|Cache Miss| TDB[(Timeline DB)]
+    end
+
+    style WLB fill:#f9f
+    style RLB fill:#f9f
+    style Cache fill:#9cf
+    style Timeline fill:#9cf</code></pre>
+<p><strong>Key Techniques:</strong>
+- Write: Fan-out on write (pre-compute timelines)
+- Read: Serve from cache (Redis)
+- Sharding: By user_id hash
+- Celebrities: Hybrid fan-out (fetch on read)</p>
+<hr />
+<h2 id="key-takeaways">Key Takeaways<a class="headerlink" href="#key-takeaways" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Best For</th>
+<th>Scale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Vertical Scaling</strong></td>
+<td>Early stage, quick wins</td>
+<td>&lt; 10K users</td>
+</tr>
+<tr>
+<td><strong>Horizontal Scaling</strong></td>
+<td>Growing traffic</td>
+<td>10K-100K</td>
+</tr>
+<tr>
+<td><strong>Caching</strong></td>
+<td>Read-heavy workloads</td>
+<td>All scales</td>
+</tr>
+<tr>
+<td><strong>Replication</strong></td>
+<td>Read scalability</td>
+<td>100K+</td>
+</tr>
+<tr>
+<td><strong>Sharding</strong></td>
+<td>Write scalability</td>
+<td>1M+</td>
+</tr>
+<tr>
+<td><strong>Microservices</strong></td>
+<td>Large teams, complex domains</td>
+<td>100K+</td>
+</tr>
+<tr>
+<td><strong>Event-Driven</strong></td>
+<td>Async workflows</td>
+<td>All scales</td>
+</tr>
+<tr>
+<td><strong>CDN</strong></td>
+<td>Global users, static content</td>
+<td>All scales</td>
+</tr>
+<tr>
+<td><strong>CQRS</strong></td>
+<td>Complex read patterns</td>
+<td>1M+</td>
+</tr>
+<tr>
+<td><strong>Auto-Scaling</strong></td>
+<td>Variable traffic</td>
+<td>All scales</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><a href="../">← Back to Topics</a> | <a href="../../">Home</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/hawaijar" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
