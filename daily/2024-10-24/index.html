@@ -613,45 +613,72 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#requirements-clarification" class="md-nav__link">
+  <a href="#step-1-functional-requirements" class="md-nav__link">
     <span class="md-ellipsis">
-      Requirements Clarification
+      Step 1: Functional Requirements
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#capacity-estimation" class="md-nav__link">
+  <a href="#step-2-non-functional-requirements" class="md-nav__link">
     <span class="md-ellipsis">
-      Capacity Estimation
+      Step 2: Non-Functional Requirements
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#high-level-design-pattern" class="md-nav__link">
+  <a href="#step-3-capacity-estimation" class="md-nav__link">
     <span class="md-ellipsis">
-      High-Level Design Pattern
+      Step 3: Capacity Estimation
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#deep-dive-areas" class="md-nav__link">
+  <a href="#step-4-api-design" class="md-nav__link">
     <span class="md-ellipsis">
-      Deep Dive Areas
+      Step 4: API Design
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#bottleneck-analysis" class="md-nav__link">
+  <a href="#step-5-initial-data-models" class="md-nav__link">
     <span class="md-ellipsis">
-      Bottleneck Analysis
+      Step 5: Initial Data Models
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-high-level-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 6: High-Level Design
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-7-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 7: Deep Dive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-8-bottleneck-analysis-trade-offs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 8: Bottleneck Analysis &amp; Trade-offs
     </span>
   </a>
   
@@ -1218,45 +1245,72 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#requirements-clarification" class="md-nav__link">
+  <a href="#step-1-functional-requirements" class="md-nav__link">
     <span class="md-ellipsis">
-      Requirements Clarification
+      Step 1: Functional Requirements
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#capacity-estimation" class="md-nav__link">
+  <a href="#step-2-non-functional-requirements" class="md-nav__link">
     <span class="md-ellipsis">
-      Capacity Estimation
+      Step 2: Non-Functional Requirements
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#high-level-design-pattern" class="md-nav__link">
+  <a href="#step-3-capacity-estimation" class="md-nav__link">
     <span class="md-ellipsis">
-      High-Level Design Pattern
+      Step 3: Capacity Estimation
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#deep-dive-areas" class="md-nav__link">
+  <a href="#step-4-api-design" class="md-nav__link">
     <span class="md-ellipsis">
-      Deep Dive Areas
+      Step 4: API Design
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#bottleneck-analysis" class="md-nav__link">
+  <a href="#step-5-initial-data-models" class="md-nav__link">
     <span class="md-ellipsis">
-      Bottleneck Analysis
+      Step 5: Initial Data Models
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-high-level-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 6: High-Level Design
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-7-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 7: Deep Dive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-8-bottleneck-analysis-trade-offs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 8: Bottleneck Analysis &amp; Trade-offs
     </span>
   </a>
   
@@ -1644,30 +1698,75 @@
 <h2 id="2-system-design-interview-approach">2. System Design Interview Approach<a class="headerlink" href="#2-system-design-interview-approach" title="Permanent link">&para;</a></h2>
 <h3 id="interview-flow">Interview Flow<a class="headerlink" href="#interview-flow" title="Permanent link">&para;</a></h3>
 <pre class="mermaid"><code>graph LR
-    A[Clarify Requirements&lt;br/&gt;5-10 min] --&gt; B[High-Level Design&lt;br/&gt;10-15 min]
-    B --&gt; C[Deep Dive&lt;br/&gt;15-20 min]
-    C --&gt; D[Bottlenecks &amp; Trade-offs&lt;br/&gt;5-10 min]
+    A[1. Requirements&lt;br/&gt;Functional + Non-Functional&lt;br/&gt;5-10 min] --&gt; B[2. Capacity Estimation&lt;br/&gt;3-5 min]
+    B --&gt; C[3. API Design&lt;br/&gt;+ Data Models&lt;br/&gt;5-7 min]
+    C --&gt; D[4. High-Level Design&lt;br/&gt;Satisfy functional requirements&lt;br/&gt;10-12 min]
+    D --&gt; E[5. Deep Dive&lt;br/&gt;Satisfy non-functional requirements&lt;br/&gt;12-15 min]
+    E --&gt; F[6. Bottlenecks &amp; Trade-offs&lt;br/&gt;5-10 min]
 
     style A fill:#9cf
     style B fill:#9f9
-    style C fill:#ff9
-    style D fill:#f9c</code></pre>
-<h3 id="requirements-clarification">Requirements Clarification<a class="headerlink" href="#requirements-clarification" title="Permanent link">&para;</a></h3>
+    style C fill:#fc9
+    style D fill:#ff9
+    style E fill:#f9c
+    style F fill:#c9f</code></pre>
+<h3 id="step-1-functional-requirements">Step 1: Functional Requirements<a class="headerlink" href="#step-1-functional-requirements" title="Permanent link">&para;</a></h3>
+<p><strong>What the system DOES - Core features and user actions</strong></p>
 <pre class="mermaid"><code>mindmap
-  root((Requirements))
-    Functional
-      Core features?
-      User actions?
-      API endpoints?
-    Non-Functional
-      Scale (Users/QPS)?
-      Latency targets?
-      Consistency needs?
-    Constraints
-      Budget?
-      Technology stack?
-      Timeline?</code></pre>
-<h3 id="capacity-estimation">Capacity Estimation<a class="headerlink" href="#capacity-estimation" title="Permanent link">&para;</a></h3>
+  root((Functional&lt;br/&gt;Requirements))
+    User Actions
+      Sign up / Login
+      Create content
+      View content
+      Update/Delete
+      Search
+    Features
+      Feed generation
+      Notifications
+      Recommendations
+      Comments/Likes
+    Business Logic
+      Validation rules
+      Access control
+      Workflows</code></pre>
+<p><strong>Example Questions:</strong>
+- What are the core features?
+- What can users do?
+- What happens when user performs action X?
+- Are there different user types/roles?</p>
+<h3 id="step-2-non-functional-requirements">Step 2: Non-Functional Requirements<a class="headerlink" href="#step-2-non-functional-requirements" title="Permanent link">&para;</a></h3>
+<p><strong>HOW WELL the system performs - Quality attributes</strong></p>
+<pre class="mermaid"><code>mindmap
+  root((Non-Functional&lt;br/&gt;Requirements))
+    Scalability
+      DAU/MAU?
+      QPS?
+      Data volume?
+      Growth rate?
+    Performance
+      Latency targets
+      Throughput
+      Response time
+    Availability
+      Uptime SLA
+      Fault tolerance
+      Recovery time
+    Consistency
+      Strong vs Eventual
+      CAP theorem
+      Data integrity
+    Security
+      Authentication
+      Authorization
+      Data privacy
+      Compliance</code></pre>
+<p><strong>Example Questions:</strong>
+- How many users? (100M DAU)
+- Read vs Write ratio? (100:1)
+- What's acceptable latency? (&lt; 200ms)
+- Strong or eventual consistency?
+- Geographic distribution?</p>
+<h3 id="step-3-capacity-estimation">Step 3: Capacity Estimation<a class="headerlink" href="#step-3-capacity-estimation" title="Permanent link">&para;</a></h3>
 <pre class="mermaid"><code>graph TB
     Start[Requirements] --&gt; Users[Users&lt;br/&gt;100M DAU]
     Users --&gt; Requests[Requests&lt;br/&gt;10 actions/user/day]
@@ -1680,8 +1779,87 @@
 
     style Result fill:#9f9
     style Total fill:#9f9</code></pre>
-<p><strong>Formula:</strong> QPS = (DAU × actions) / 86,400</p>
-<h3 id="high-level-design-pattern">High-Level Design Pattern<a class="headerlink" href="#high-level-design-pattern" title="Permanent link">&para;</a></h3>
+<p><strong>Formulas:</strong>
+- QPS = (DAU × actions_per_user) / 86,400
+- Peak QPS = Average QPS × 3
+- Storage = QPS × data_size × seconds_per_day</p>
+<h3 id="step-4-api-design">Step 4: API Design<a class="headerlink" href="#step-4-api-design" title="Permanent link">&para;</a></h3>
+<p><strong>Define key endpoints early (subject to refinement in deep dive)</strong></p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant Client
+    participant API Gateway
+    participant Service
+
+    Note over Client,Service: POST /api/v1/posts
+    Client-&gt;&gt;API Gateway: Create Post
+    API Gateway-&gt;&gt;Service: {user_id, content, media}
+    Service--&gt;&gt;API Gateway: 201 Created {post_id, timestamp}
+    API Gateway--&gt;&gt;Client: Response
+
+    Note over Client,Service: GET /api/v1/feed?user_id=456&amp;limit=20
+    Client-&gt;&gt;API Gateway: Get Feed
+    API Gateway-&gt;&gt;Service: Forward request
+    Service--&gt;&gt;API Gateway: 200 OK {posts: [...]}
+    API Gateway--&gt;&gt;Client: Response</code></pre>
+<p><strong>Core APIs:</strong>
+- <code>POST /users</code> - Create user
+- <code>POST /posts</code> - Create content
+- <code>GET /feed</code> - Retrieve personalized feed
+- <code>GET /posts/:id</code> - Get specific post
+- <code>POST /posts/:id/like</code> - Like content
+- <code>DELETE /posts/:id</code> - Remove content</p>
+<h3 id="step-5-initial-data-models">Step 5: Initial Data Models<a class="headerlink" href="#step-5-initial-data-models" title="Permanent link">&para;</a></h3>
+<p><strong>High-level schema (will be refined during deep dive)</strong></p>
+<pre class="mermaid"><code>erDiagram
+    USER ||--o{ POST : creates
+    USER ||--o{ FOLLOW : follows
+    USER ||--o{ LIKE : likes
+    POST ||--o{ LIKE : receives
+    POST ||--o{ COMMENT : has
+
+    USER {
+        string user_id PK
+        string username
+        string email
+        string profile_pic
+        timestamp created_at
+    }
+
+    POST {
+        string post_id PK
+        string user_id FK
+        string content
+        string media_url
+        int like_count
+        timestamp created_at
+    }
+
+    FOLLOW {
+        string follower_id FK
+        string followee_id FK
+        timestamp created_at
+    }
+
+    LIKE {
+        string user_id FK
+        string post_id FK
+        timestamp created_at
+    }
+
+    COMMENT {
+        string comment_id PK
+        string post_id FK
+        string user_id FK
+        string content
+        timestamp created_at
+    }</code></pre>
+<p><strong>Note:</strong> Data models will evolve during deep dive based on:
+- Query patterns
+- Sharding strategy
+- Denormalization needs
+- Caching requirements</p>
+<h3 id="step-6-high-level-design">Step 6: High-Level Design<a class="headerlink" href="#step-6-high-level-design" title="Permanent link">&para;</a></h3>
+<p><strong>Goal: Satisfy functional requirements - focus on making features work</strong></p>
 <pre class="mermaid"><code>graph TB
     Client[Clients] --&gt; DNS[DNS]
     DNS --&gt; CDN[CDN]
@@ -1705,26 +1883,57 @@
     style LB fill:#f9f
     style Cache fill:#9cf
     style Queue fill:#ff9</code></pre>
-<h3 id="deep-dive-areas">Deep Dive Areas<a class="headerlink" href="#deep-dive-areas" title="Permanent link">&para;</a></h3>
+<p><strong>At this stage:</strong>
+- Start simple - single region, basic components
+- Show data flow for key features
+- Map APIs to components
+- Demonstrate how functional requirements are met
+- Don't over-engineer yet!</p>
+<p><strong>Example walkthrough:</strong>
+1. User creates post → API Server → Save to DB
+2. User views feed → API Server → Check Cache → Query DB if miss
+3. Image upload → API Server → Queue → Worker → Object Storage</p>
+<h3 id="step-7-deep-dive">Step 7: Deep Dive<a class="headerlink" href="#step-7-deep-dive" title="Permanent link">&para;</a></h3>
+<p><strong>Goal: Satisfy non-functional requirements - scale, performance, reliability</strong></p>
 <pre class="mermaid"><code>mindmap
-  root((Deep Dive&lt;br/&gt;Topics))
+  root((Deep Dive&lt;br/&gt;Focus on NFRs))
     Scalability
+      How to handle 100M users?
+      Database sharding strategy
+      Caching at scale
       Horizontal scaling
-      Database sharding
-      Caching strategy
     Performance
+      How to achieve &lt;200ms latency?
       Query optimization
       Index design
-      CDN usage
+      CDN for static assets
+      Read replicas
     Reliability
+      How to achieve 99.9% uptime?
       Failover handling
       Data replication
+      Multi-region deployment
       Backup strategy
+    Consistency
+      Strong vs Eventual?
+      Write-through vs write-back cache
+      Replication lag handling
     Security
-      Authentication
+      Authentication (OAuth, JWT)
       Rate limiting
-      Data encryption</code></pre>
-<h3 id="bottleneck-analysis">Bottleneck Analysis<a class="headerlink" href="#bottleneck-analysis" title="Permanent link">&para;</a></h3>
+      Data encryption
+      DDoS protection</code></pre>
+<p><strong>Typical Deep Dive Topics:</strong>
+- <strong>For 100M users</strong>: Add sharding, multiple cache clusters, auto-scaling
+- <strong>For &lt;200ms latency</strong>: Add edge locations, optimize queries, increase replicas
+- <strong>For high availability</strong>: Multi-AZ deployment, circuit breakers, health checks
+- <strong>For consistency</strong>: Choose replication strategy, handle conflicts</p>
+<p><strong>Data Model Refinements:</strong>
+- Denormalize for read performance
+- Add composite indexes
+- Partition large tables
+- Add caching layer schemas</p>
+<h3 id="step-8-bottleneck-analysis-trade-offs">Step 8: Bottleneck Analysis &amp; Trade-offs<a class="headerlink" href="#step-8-bottleneck-analysis-trade-offs" title="Permanent link">&para;</a></h3>
 <pre class="mermaid"><code>graph TB
     subgraph "Identify Bottlenecks"
         B1[Database writes&lt;br/&gt;Too slow?]
