@@ -1604,7 +1604,10 @@
     LB --&gt;|IP Hash| S3[Server 3]
 
     style LB fill:#f9f,stroke:#333,stroke-width:4px</code></pre>
-<p><strong>Key Algorithms:</strong> Round Robin, Least Connections, IP Hash</p>
+<p><strong>Key Algorithms:</strong>
+- <strong>Round Robin</strong>: Distribute requests sequentially to each server in rotation
+- <strong>Least Connections</strong>: Route to the server with the fewest active connections
+- <strong>IP Hash</strong>: Consistently route the same client IP to the same server</p>
 <h3 id="caching-layers">Caching Layers<a class="headerlink" href="#caching-layers" title="Permanent link">&para;</a></h3>
 <pre class="mermaid"><code>graph TD
     Request[Client Request] --&gt; CDN{CDN Cache Hit?}
@@ -1988,20 +1991,21 @@
 <h3 id="interview-time-management">Interview Time Management<a class="headerlink" href="#interview-time-management" title="Permanent link">&para;</a></h3>
 <pre class="mermaid"><code>gantt
     title 45-Minute System Design Interview
-    dateFormat mm:ss
-    axisFormat %M:%S
+    dateFormat mm
+    axisFormat %M min
 
-    section Phase 1
-    Requirements &amp; Clarification :00:00, 10m
+    section Requirements
+    Functional + Non-Functional :00, 10m
 
-    section Phase 2
-    High-Level Design :10:00, 15m
+    section Design
+    Capacity + API + Data Model :10, 8m
+    High-Level Design :18, 10m
 
-    section Phase 3
-    Deep Dive Components :25:00, 12m
+    section Deep Dive
+    NFR Optimization :28, 12m
 
-    section Phase 4
-    Bottlenecks &amp; Wrap-up :37:00, 8m</code></pre>
+    section Wrap-up
+    Bottlenecks &amp; Trade-offs :40, 5m</code></pre>
 <h3 id="common-mistakes">Common Mistakes<a class="headerlink" href="#common-mistakes" title="Permanent link">&para;</a></h3>
 <pre class="mermaid"><code>graph TD
     M1[❌ Jumping to solution&lt;br/&gt;without clarifying]
