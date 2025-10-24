@@ -63,6 +63,9 @@ nav:
     - Day 1 (Oct 24): daily/2024-10-24.md
   - Topics:
     - Overview: topics/index.md
+    - Building Blocks: topics/building-blocks.md
+    - Interview Approach: topics/interview-approach.md
+    - Scalability Patterns: topics/scalability-patterns.md
   - Resources: resources.md
   - About: about.md
 

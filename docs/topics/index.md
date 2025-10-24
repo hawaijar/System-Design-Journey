@@ -2,6 +2,12 @@
 
 This section organizes system design concepts by theme for easy reference and review.
 
+## Available Guides
+
+- **[Fundamental Building Blocks](building-blocks.md)** - Core components of distributed systems
+- **[Interview Approach](interview-approach.md)** - How to ace FAANG system design interviews
+- **[Scalability Patterns](scalability-patterns.md)** - Proven patterns to scale from 1K to 10M+ users
+
 ## Core Concepts
 
 ### Scalability
