@@ -1,7 +1,7 @@
 site_name: System Design Journey
 site_description: Daily exploration of FAANG-level system design concepts
 site_author: Sushil Mayengbam
-site_url: https://yourusername.github.io/system-design-journey
+site_url: https://hawaijar.github.io/System-Design-Journey
 
 theme:
   name: material
@@ -69,4 +69,4 @@ nav:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/yourusername
+      link: https://github.com/hawaijar

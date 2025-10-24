@@ -8,7 +8,7 @@ This repository contains my daily learning logs, system design notes, and practi
 
 ## Live Site
 
-Visit the live documentation: [system-design-journey](https://yourusername.github.io/system-design-journey)
+Visit the live documentation: [system-design-journey](https://hawaijar.github.io/System-Design-Journey)
 
 ## Local Development
 
@@ -16,8 +16,8 @@ Visit the live documentation: [system-design-journey](https://yourusername.githu
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/system-design-journey.git
-cd system-design-journey
+git clone https://github.com/hawaijar/System-Design-Journey.git
+cd System-Design-Journey
 ```
 
 2. Install dependencies:
