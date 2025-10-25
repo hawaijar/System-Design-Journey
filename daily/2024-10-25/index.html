@@ -1,0 +1,2327 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Daily exploration of FAANG-level system design concepts">
+      
+      
+        <meta name="author" content="Sushil Mayengbam">
+      
+      
+        <link rel="canonical" href="https://hawaijar.github.io/System-Design-Journey/daily/2024-10-25/">
+      
+      
+        <link rel="prev" href="../2024-10-24/">
+      
+      
+        <link rel="next" href="../../topics/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+    
+    
+      
+        <title>Day 2 (Oct 25) - System Design Journey</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.84d31ad4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#day-2-october-25-2024" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="System Design Journey" class="md-header__button md-logo" aria-label="System Design Journey" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            System Design Journey
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Day 2 (Oct 25)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Daily Logs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../topics/" class="md-tabs__link">
+          
+  
+  
+  Topics
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../resources/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Resources
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  About
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="System Design Journey" class="md-nav__button md-logo" aria-label="System Design Journey" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    System Design Journey
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Daily Logs
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Daily Logs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2024-10-24/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Day 1 (Oct 24)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Day 2 (Oct 25)
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Day 2 (Oct 25)
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#topics-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topics Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-learnings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Learnings
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-consistent-hashing" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Consistent Hashing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Consistent Hashing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem-traditional-hashing" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Problem: Traditional Hashing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consistent-hashing-solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consistent Hashing Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visual-hash-ring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visual: Hash Ring
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-a-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding a Server
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-virtual-nodes-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Virtual Nodes Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consistent-hashing-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consistent Hashing Algorithm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-world-use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Use Cases
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consistent-hashing-vs-simple-hashing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consistent Hashing vs Simple Hashing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-pseudocode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Pseudocode
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-stateless-vs-stateful-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Stateless vs Stateful Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Stateless vs Stateful Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stateful-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stateful Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stateless-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stateless Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#session-storage-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      Session Storage Comparison
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stateless-authentication-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stateless Authentication Flow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stateless-design-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stateless Design Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#state-migration-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      State Migration Strategy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparison-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison Table
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-load-balancer-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Load Balancer Types
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Load Balancer Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#layer-4-transport-layer-load-balancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 4 (Transport Layer) Load Balancer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layer-7-application-layer-load-balancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 7 (Application Layer) Load Balancer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#l4-vs-l7-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      L4 vs L7 Comparison
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deployment-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment Strategies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment Strategies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#strategy-1-dns-round-robin" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strategy 1: DNS Round Robin
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strategy-2-single-load-balancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strategy 2: Single Load Balancer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strategy-3-active-passive-lb" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strategy 3: Active-Passive LB
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strategy-4-active-active-lb-best" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strategy 4: Active-Active LB (Best)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-tier-load-balancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Tier Load Balancing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-balancer-algorithms-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Load Balancer Algorithms Deep Dive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#health-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Health Checks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#popular-load-balancers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Popular Load Balancers
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-reference-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Reference Tables
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Reference Tables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-what" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Use What?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#technology-stack-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technology Stack Examples
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practice Problems
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resources
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reflections" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reflections
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Topics
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Topics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../topics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../topics/building-blocks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Building Blocks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../topics/interview-approach/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Interview Approach
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../topics/scalability-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Scalability Patterns
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Resources
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#topics-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topics Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-learnings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Learnings
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-consistent-hashing" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Consistent Hashing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Consistent Hashing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem-traditional-hashing" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Problem: Traditional Hashing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consistent-hashing-solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consistent Hashing Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visual-hash-ring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visual: Hash Ring
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-a-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding a Server
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-virtual-nodes-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Virtual Nodes Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consistent-hashing-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consistent Hashing Algorithm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-world-use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Use Cases
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consistent-hashing-vs-simple-hashing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consistent Hashing vs Simple Hashing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-pseudocode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Pseudocode
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-stateless-vs-stateful-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Stateless vs Stateful Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Stateless vs Stateful Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stateful-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stateful Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stateless-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stateless Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#session-storage-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      Session Storage Comparison
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stateless-authentication-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stateless Authentication Flow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stateless-design-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stateless Design Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#state-migration-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      State Migration Strategy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparison-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison Table
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-load-balancer-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Load Balancer Types
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Load Balancer Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#layer-4-transport-layer-load-balancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 4 (Transport Layer) Load Balancer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layer-7-application-layer-load-balancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 7 (Application Layer) Load Balancer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#l4-vs-l7-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      L4 vs L7 Comparison
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deployment-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment Strategies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment Strategies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#strategy-1-dns-round-robin" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strategy 1: DNS Round Robin
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strategy-2-single-load-balancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strategy 2: Single Load Balancer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strategy-3-active-passive-lb" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strategy 3: Active-Passive LB
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strategy-4-active-active-lb-best" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strategy 4: Active-Active LB (Best)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-tier-load-balancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Tier Load Balancing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-balancer-algorithms-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Load Balancer Algorithms Deep Dive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#health-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Health Checks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#popular-load-balancers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Popular Load Balancers
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-reference-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Reference Tables
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Reference Tables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-what" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Use What?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#technology-stack-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technology Stack Examples
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practice-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practice Problems
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resources
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reflections" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reflections
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="day-2-october-25-2024">Day 2 - October 25, 2024<a class="headerlink" href="#day-2-october-25-2024" title="Permanent link">&para;</a></h1>
+<h2 id="topics-covered">Topics Covered<a class="headerlink" href="#topics-covered" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Consistent Hashing algorithm and implementation</li>
+<li>Stateless vs Stateful architecture patterns</li>
+<li>Load balancer types and deployment strategies</li>
+</ul>
+<h2 id="key-learnings">Key Learnings<a class="headerlink" href="#key-learnings" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Consistent hashing minimizes key redistribution when nodes are added/removed</li>
+<li>Stateless architectures scale horizontally much easier than stateful ones</li>
+<li>Different load balancer layers serve different purposes (L4 vs L7)</li>
+<li>Virtual nodes help distribute load evenly in consistent hashing</li>
+</ul>
+<hr />
+<h2 id="1-consistent-hashing">1. Consistent Hashing<a class="headerlink" href="#1-consistent-hashing" title="Permanent link">&para;</a></h2>
+<h3 id="the-problem-traditional-hashing">The Problem: Traditional Hashing<a class="headerlink" href="#the-problem-traditional-hashing" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TB
+    subgraph "Simple Hash: key % num_servers"
+        K1[Key: user_1234&lt;br/&gt;Hash % 3 = 0] --&gt; S0[Server 0]
+        K2[Key: user_5678&lt;br/&gt;Hash % 3 = 1] --&gt; S1[Server 1]
+        K3[Key: user_9012&lt;br/&gt;Hash % 3 = 2] --&gt; S2[Server 2]
+    end
+
+    subgraph "Problem: Add Server 3"
+        K1b[Key: user_1234&lt;br/&gt;Hash % 4 = 0] --&gt; S0b[Server 0]
+        K2b[Key: user_5678&lt;br/&gt;Hash % 4 = 1] --&gt; S1b[Server 1]
+        K3b[Key: user_9012&lt;br/&gt;Hash % 4 = 0] -.-&gt;|MOVED!| S0b
+    end
+
+    style K3b fill:#f99
+    style S0b fill:#f99</code></pre>
+<p><strong>Issue:</strong> When servers change, most keys get remapped → cache invalidation storm!</p>
+<h3 id="consistent-hashing-solution">Consistent Hashing Solution<a class="headerlink" href="#consistent-hashing-solution" title="Permanent link">&para;</a></h3>
+<p><strong>Core Idea:</strong> Hash both keys AND servers onto a ring (0 to 2^32-1)</p>
+<pre class="mermaid"><code>graph TB
+    subgraph "Hash Ring Concept"
+        Ring[("Hash Ring&lt;br/&gt;0 to 2³²-1")]
+
+        S0[Server 0&lt;br/&gt;Hash: 1000] --&gt; Ring
+        S1[Server 1&lt;br/&gt;Hash: 5000] --&gt; Ring
+        S2[Server 2&lt;br/&gt;Hash: 9000] --&gt; Ring
+
+        K1[Key A&lt;br/&gt;Hash: 2000] -.-&gt;|Clockwise to&lt;br/&gt;next server| S1
+        K2[Key B&lt;br/&gt;Hash: 6000] -.-&gt;|Clockwise to&lt;br/&gt;next server| S2
+        K3[Key C&lt;br/&gt;Hash: 500] -.-&gt;|Clockwise to&lt;br/&gt;next server| S0
+    end
+
+    style Ring fill:#9cf</code></pre>
+<h3 id="visual-hash-ring">Visual: Hash Ring<a class="headerlink" href="#visual-hash-ring" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TD
+    subgraph "Consistent Hash Ring"
+        direction LR
+
+        Start([0]) --&gt; S0[Server 0&lt;br/&gt;Position: 1000]
+        S0 --&gt; K1[Key: user_A&lt;br/&gt;2000]
+        K1 --&gt; K2[Key: user_B&lt;br/&gt;3500]
+        K2 --&gt; S1[Server 1&lt;br/&gt;Position: 5000]
+        S1 --&gt; K3[Key: user_C&lt;br/&gt;6500]
+        K3 --&gt; S2[Server 2&lt;br/&gt;Position: 9000]
+        S2 --&gt; K4[Key: user_D&lt;br/&gt;10000]
+        K4 --&gt; End([Back to 0...])
+
+        End -.-&gt; Start
+    end
+
+    style S0 fill:#9f9
+    style S1 fill:#9f9
+    style S2 fill:#9f9</code></pre>
+<p><strong>Rule:</strong> Each key goes to the first server clockwise from its hash position</p>
+<h3 id="adding-a-server">Adding a Server<a class="headerlink" href="#adding-a-server" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TB
+    subgraph "Before: 3 Servers"
+        B0[Server 0: 1000]
+        B1[Server 1: 5000]
+        B2[Server 2: 9000]
+
+        BK1[Keys 1001-5000&lt;br/&gt;6 keys] --&gt; B1
+        BK2[Keys 5001-9000&lt;br/&gt;5 keys] --&gt; B2
+        BK3[Keys 9001-1000&lt;br/&gt;7 keys] --&gt; B0
+    end
+
+    subgraph "After: Add Server 3 at 7000"
+        A0[Server 0: 1000]
+        A1[Server 1: 5000]
+        A3[Server 3: 7000&lt;br/&gt;NEW]
+        A2[Server 2: 9000]
+
+        AK1[Keys 1001-5000&lt;br/&gt;6 keys] --&gt; A1
+        AK2[Keys 5001-7000&lt;br/&gt;2 keys] --&gt; A3
+        AK3[Keys 7001-9000&lt;br/&gt;3 keys] --&gt; A2
+        AK4[Keys 9001-1000&lt;br/&gt;7 keys] --&gt; A0
+    end
+
+    BK2 -.-&gt;|Only 2 keys moved!| AK2
+
+    style A3 fill:#9f9
+    style BK2 fill:#ff9
+    style AK2 fill:#9f9</code></pre>
+<p><strong>Benefit:</strong> Only keys between Server 1 (5000) and Server 3 (7000) are remapped!</p>
+<h3 id="the-virtual-nodes-problem">The Virtual Nodes Problem<a class="headerlink" href="#the-virtual-nodes-problem" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TB
+    subgraph "Problem: Uneven Distribution"
+        P1[Server 0&lt;br/&gt;Position: 1000&lt;br/&gt;Handles: 90% of keys]
+        P2[Server 1&lt;br/&gt;Position: 2000&lt;br/&gt;Handles: 5% of keys]
+        P3[Server 2&lt;br/&gt;Position: 3000&lt;br/&gt;Handles: 5% of keys]
+    end
+
+    subgraph "Solution: Virtual Nodes"
+        S0_1[S0-VNode1: 1000]
+        S0_2[S0-VNode2: 5000]
+        S0_3[S0-VNode3: 9000]
+
+        S1_1[S1-VNode1: 2000]
+        S1_2[S1-VNode2: 6000]
+        S1_3[S1-VNode3: 10000]
+
+        S2_1[S2-VNode1: 3000]
+        S2_2[S2-VNode2: 7000]
+        S2_3[S2-VNode3: 11000]
+    end
+
+    style P1 fill:#f99
+    style S0_1 fill:#9f9
+    style S0_2 fill:#9f9
+    style S0_3 fill:#9f9</code></pre>
+<p><strong>Virtual Nodes:</strong> Each physical server gets multiple positions on the ring (typically 100-200)</p>
+<h3 id="consistent-hashing-algorithm">Consistent Hashing Algorithm<a class="headerlink" href="#consistent-hashing-algorithm" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant Client
+    participant HashRing
+    participant Server
+
+    Client-&gt;&gt;HashRing: hash(key) = 6500
+    HashRing-&gt;&gt;HashRing: Find next server clockwise
+    Note over HashRing: Servers at: 1000, 5000, 9000&lt;br/&gt;6500 → next is 9000
+    HashRing-&gt;&gt;Server: Route to Server 2 (9000)
+    Server--&gt;&gt;Client: Return data</code></pre>
+<h3 id="real-world-use-cases">Real-World Use Cases<a class="headerlink" href="#real-world-use-cases" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>mindmap
+  root((Consistent&lt;br/&gt;Hashing&lt;br/&gt;Use Cases))
+    Distributed Caching
+      Memcached
+      Redis Cluster
+      CDN nodes
+    Load Balancing
+      Service mesh routing
+      API gateway
+      Database sharding
+    Distributed Storage
+      Cassandra
+      DynamoDB
+      Riak
+    Content Distribution
+      P2P networks
+      BitTorrent
+      IPFS</code></pre>
+<h3 id="consistent-hashing-vs-simple-hashing">Consistent Hashing vs Simple Hashing<a class="headerlink" href="#consistent-hashing-vs-simple-hashing" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Simple Hash (key % N)</th>
+<th>Consistent Hash</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Redistribution on add/remove</strong></td>
+<td>~100% keys remapped</td>
+<td>Only K/N keys (K=total keys, N=nodes)</td>
+</tr>
+<tr>
+<td><strong>Load distribution</strong></td>
+<td>Perfect if N is stable</td>
+<td>Good with virtual nodes</td>
+</tr>
+<tr>
+<td><strong>Complexity</strong></td>
+<td>O(1)</td>
+<td>O(log N) with binary search</td>
+</tr>
+<tr>
+<td><strong>Use case</strong></td>
+<td>Static server count</td>
+<td>Dynamic scaling</td>
+</tr>
+<tr>
+<td><strong>Cache hit rate on scale</strong></td>
+<td>Drops to ~0%</td>
+<td>Maintains ~(N-1)/N hit rate</td>
+</tr>
+</tbody>
+</table>
+<h3 id="implementation-pseudocode">Implementation Pseudocode<a class="headerlink" href="#implementation-pseudocode" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TD
+    Start[Add Key to Ring] --&gt; Hash[Hash key to position P]
+    Hash --&gt; Search[Binary search for next server &gt; P]
+    Search --&gt; Found{Server found?}
+    Found --&gt;|Yes| Return[Return server]
+    Found --&gt;|No| Wrap[Wrap around to first server]
+    Wrap --&gt; Return
+
+    AddServer[Add Server] --&gt; HashServer[Hash server ID multiple times]
+    HashServer --&gt; VNodes[Create 150 virtual nodes]
+    VNodes --&gt; Insert[Insert all positions into ring]
+    Insert --&gt; Sort[Sort ring by position]
+
+    style Start fill:#9cf
+    style AddServer fill:#9f9</code></pre>
+<hr />
+<h2 id="2-stateless-vs-stateful-architecture">2. Stateless vs Stateful Architecture<a class="headerlink" href="#2-stateless-vs-stateful-architecture" title="Permanent link">&para;</a></h2>
+<h3 id="stateful-architecture">Stateful Architecture<a class="headerlink" href="#stateful-architecture" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TB
+    Client1[Client A] --&gt; LB[Load Balancer]
+    Client2[Client B] --&gt; LB
+
+    LB --&gt;|Session 1| S1[Server 1&lt;br/&gt;💾 Session Data:&lt;br/&gt;User A logged in&lt;br/&gt;Cart: 3 items]
+    LB --&gt;|Session 2| S2[Server 2&lt;br/&gt;💾 Session Data:&lt;br/&gt;User B logged in&lt;br/&gt;Cart: 1 item]
+
+    Client1 -.-&gt;|Next request&lt;br/&gt;MUST go to Server 1| S1
+
+    style S1 fill:#f99
+    style S2 fill:#f99</code></pre>
+<p><strong>Problem:</strong> Client is "stuck" to specific server (sticky sessions)</p>
+<h3 id="stateless-architecture">Stateless Architecture<a class="headerlink" href="#stateless-architecture" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TB
+    Client1[Client A] --&gt; LB[Load Balancer]
+    Client2[Client B] --&gt; LB
+
+    LB --&gt;|Any request| S1[Server 1&lt;br/&gt;No local state]
+    LB --&gt;|Any request| S2[Server 2&lt;br/&gt;No local state]
+    LB --&gt;|Any request| S3[Server 3&lt;br/&gt;No local state]
+
+    S1 &amp; S2 &amp; S3 --&gt; Cache[(Redis Cache&lt;br/&gt;All session data)]
+    S1 &amp; S2 &amp; S3 --&gt; DB[(Database&lt;br/&gt;Persistent data)]
+
+    style S1 fill:#9f9
+    style S2 fill:#9f9
+    style S3 fill:#9f9
+    style Cache fill:#9cf</code></pre>
+<p><strong>Benefit:</strong> Any server can handle any request - perfect for horizontal scaling!</p>
+<h3 id="session-storage-comparison">Session Storage Comparison<a class="headerlink" href="#session-storage-comparison" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph LR
+    subgraph "Stateful: Server-Side Sessions"
+        SF1[Server 1&lt;br/&gt;Session Store]
+        SF2[Server 2&lt;br/&gt;Session Store]
+        SF3[Server 3&lt;br/&gt;Session Store]
+
+        Problem[❌ Session affinity required&lt;br/&gt;❌ Lost on server failure&lt;br/&gt;❌ Hard to scale]
+    end
+
+    subgraph "Stateless: External Session Store"
+        SL1[Server 1]
+        SL2[Server 2]
+        SL3[Server 3]
+
+        SL1 &amp; SL2 &amp; SL3 --&gt; Redis[(Redis Cluster)]
+
+        Benefit[✅ No session affinity&lt;br/&gt;✅ Survives server failure&lt;br/&gt;✅ Easy to scale]
+    end
+
+    style SF1 fill:#f99
+    style SF2 fill:#f99
+    style SF3 fill:#f99
+    style SL1 fill:#9f9
+    style SL2 fill:#9f9
+    style SL3 fill:#9f9</code></pre>
+<h3 id="stateless-authentication-flow">Stateless Authentication Flow<a class="headerlink" href="#stateless-authentication-flow" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant Client
+    participant LB as Load Balancer
+    participant S1 as Server 1
+    participant S2 as Server 2
+    participant Redis
+    participant DB
+
+    Client-&gt;&gt;LB: Login (username, password)
+    LB-&gt;&gt;S1: Route to Server 1
+    S1-&gt;&gt;DB: Verify credentials
+    DB--&gt;&gt;S1: User valid
+    S1-&gt;&gt;Redis: Store session (session_id, user_data)
+    S1--&gt;&gt;Client: Return JWT token
+
+    Note over Client: Next request goes to different server
+
+    Client-&gt;&gt;LB: Get cart (JWT token)
+    LB-&gt;&gt;S2: Route to Server 2
+    S2-&gt;&gt;S2: Validate JWT signature
+    S2-&gt;&gt;Redis: Get session data
+    Redis--&gt;&gt;S2: User data
+    S2-&gt;&gt;DB: Fetch cart
+    DB--&gt;&gt;S2: Cart items
+    S2--&gt;&gt;Client: Cart data</code></pre>
+<h3 id="stateless-design-patterns">Stateless Design Patterns<a class="headerlink" href="#stateless-design-patterns" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>mindmap
+  root((Stateless&lt;br/&gt;Patterns))
+    Client-Side State
+      JWT tokens
+      Cookies
+      LocalStorage
+      URL parameters
+    Shared State Store
+      Redis/Memcached
+      DynamoDB
+      Cassandra
+    Database Sessions
+      PostgreSQL
+      MySQL
+      MongoDB
+    Distributed Cache
+      Redis Cluster
+      Hazelcast
+      Apache Ignite</code></pre>
+<h3 id="state-migration-strategy">State Migration Strategy<a class="headerlink" href="#state-migration-strategy" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TD
+    Start[Stateful Application] --&gt; Identify[Identify session data]
+    Identify --&gt; Choose{Choose storage}
+
+    Choose --&gt;|Fast, temporary| Redis[External Cache&lt;br/&gt;Redis/Memcached]
+    Choose --&gt;|Persistent| DB[Database&lt;br/&gt;PostgreSQL/DynamoDB]
+    Choose --&gt;|Client-side| JWT[JWT Tokens&lt;br/&gt;Signed by server]
+
+    Redis --&gt; Implement[Implement session API]
+    DB --&gt; Implement
+    JWT --&gt; Implement
+
+    Implement --&gt; Test[Test with load balancer]
+    Test --&gt; Verify{Sessions work&lt;br/&gt;across servers?}
+
+    Verify --&gt;|No| Debug[Debug session sync]
+    Verify --&gt;|Yes| Deploy[Deploy stateless architecture]
+
+    Debug --&gt; Test
+
+    style Start fill:#f99
+    style Deploy fill:#9f9</code></pre>
+<h3 id="comparison-table">Comparison Table<a class="headerlink" href="#comparison-table" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Stateful</th>
+<th>Stateless</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Scaling</strong></td>
+<td>Vertical only (complex horizontal)</td>
+<td>Easy horizontal scaling</td>
+</tr>
+<tr>
+<td><strong>Load balancing</strong></td>
+<td>Requires sticky sessions</td>
+<td>Any server handles any request</td>
+</tr>
+<tr>
+<td><strong>Failure handling</strong></td>
+<td>Lost sessions on crash</td>
+<td>Sessions survive server failures</td>
+</tr>
+<tr>
+<td><strong>Deployment</strong></td>
+<td>Complex (session drain)</td>
+<td>Simple (just add/remove servers)</td>
+</tr>
+<tr>
+<td><strong>Memory usage</strong></td>
+<td>High (stores all sessions)</td>
+<td>Low (compute only)</td>
+</tr>
+<tr>
+<td><strong>Database load</strong></td>
+<td>Lower (cached locally)</td>
+<td>Higher (external lookups)</td>
+</tr>
+<tr>
+<td><strong>Latency</strong></td>
+<td>Lower (local access)</td>
+<td>Slightly higher (network call)</td>
+</tr>
+<tr>
+<td><strong>Use cases</strong></td>
+<td>WebSockets, gaming servers</td>
+<td>REST APIs, microservices</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-load-balancer-types">3. Load Balancer Types<a class="headerlink" href="#3-load-balancer-types" title="Permanent link">&para;</a></h2>
+<h3 id="layer-4-transport-layer-load-balancer">Layer 4 (Transport Layer) Load Balancer<a class="headerlink" href="#layer-4-transport-layer-load-balancer" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TB
+    Client[Client&lt;br/&gt;IP: 1.2.3.4&lt;br/&gt;Port: 50000] --&gt;|TCP packet| L4[Layer 4 LB&lt;br/&gt;Works with:&lt;br/&gt;IP + Port only]
+
+    L4 --&gt;|Forward based on&lt;br/&gt;IP hash or round-robin| S1[Server 1&lt;br/&gt;10.0.1.10:80]
+    L4 --&gt; S2[Server 2&lt;br/&gt;10.0.1.11:80]
+    L4 --&gt; S3[Server 3&lt;br/&gt;10.0.1.12:80]
+
+    Note1[No HTTP inspection&lt;br/&gt;Fast &amp; efficient&lt;br/&gt;NAT + Forwarding]
+
+    style L4 fill:#9cf</code></pre>
+<p><strong>Characteristics:</strong>
+- Works at TCP/UDP level
+- Inspects: IP address, Port
+- Fast (no HTTP parsing)
+- Cannot route based on URL or headers</p>
+<h3 id="layer-7-application-layer-load-balancer">Layer 7 (Application Layer) Load Balancer<a class="headerlink" href="#layer-7-application-layer-load-balancer" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TB
+    Client[Client Request&lt;br/&gt;GET /api/users&lt;br/&gt;Host: api.example.com&lt;br/&gt;Cookie: session=abc] --&gt;|HTTP request| L7[Layer 7 LB&lt;br/&gt;Inspects:&lt;br/&gt;URL, Headers,&lt;br/&gt;Cookies, Body]
+
+    L7 --&gt;|/api/users*| API[API Servers]
+    L7 --&gt;|/static/*| Static[Static Servers]
+    L7 --&gt;|/admin/*| Admin[Admin Servers]
+
+    API --&gt; A1[API Server 1]
+    API --&gt; A2[API Server 2]
+
+    Static --&gt; S1[CDN Server 1]
+    Static --&gt; S2[CDN Server 2]
+
+    Admin --&gt; Ad1[Admin Server 1]
+
+    style L7 fill:#f9f</code></pre>
+<p><strong>Characteristics:</strong>
+- Works at HTTP/HTTPS level
+- Inspects: URL, headers, cookies, body
+- Slower (parses HTTP)
+- Can route based on content</p>
+<h3 id="l4-vs-l7-comparison">L4 vs L7 Comparison<a class="headerlink" href="#l4-vs-l7-comparison" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph LR
+    subgraph "Layer 4: Fast but Simple"
+        L4[L4 Load Balancer]
+        L4 --&gt;|Based on IP:Port| L4_1[Backend Pool]
+
+        L4_Features[✅ Very fast&lt;br/&gt;✅ Low latency&lt;br/&gt;✅ Protocol agnostic&lt;br/&gt;❌ No content routing&lt;br/&gt;❌ No SSL termination&lt;br/&gt;❌ No caching]
+    end
+
+    subgraph "Layer 7: Slower but Smart"
+        L7[L7 Load Balancer]
+        L7 --&gt;|Based on URL/Headers| L7_1[Route /api]
+        L7 --&gt;|Based on URL/Headers| L7_2[Route /static]
+
+        L7_Features[✅ Content-based routing&lt;br/&gt;✅ SSL termination&lt;br/&gt;✅ Caching&lt;br/&gt;✅ WAF integration&lt;br/&gt;❌ Slower&lt;br/&gt;❌ Higher latency]
+    end
+
+    style L4 fill:#9cf
+    style L7 fill:#f9f</code></pre>
+<h3 id="deployment-strategies">Deployment Strategies<a class="headerlink" href="#deployment-strategies" title="Permanent link">&para;</a></h3>
+<h4 id="strategy-1-dns-round-robin">Strategy 1: DNS Round Robin<a class="headerlink" href="#strategy-1-dns-round-robin" title="Permanent link">&para;</a></h4>
+<pre class="mermaid"><code>graph TB
+    Client[Client] --&gt;|1. DNS Query&lt;br/&gt;example.com| DNS[DNS Server]
+    DNS --&gt;|2. Returns IPs&lt;br/&gt;Rotating list| Client
+
+    Client --&gt;|3. Connect to IP| S1[Server 1&lt;br/&gt;1.2.3.4]
+    Client -.-&gt;|Next time| S2[Server 2&lt;br/&gt;1.2.3.5]
+    Client -.-&gt;|Next time| S3[Server 3&lt;br/&gt;1.2.3.6]
+
+    Problem[❌ No health checks&lt;br/&gt;❌ Uneven distribution&lt;br/&gt;❌ DNS caching issues]
+
+    style DNS fill:#ff9</code></pre>
+<h4 id="strategy-2-single-load-balancer">Strategy 2: Single Load Balancer<a class="headerlink" href="#strategy-2-single-load-balancer" title="Permanent link">&para;</a></h4>
+<pre class="mermaid"><code>graph TB
+    Client[Clients] --&gt; LB[Load Balancer&lt;br/&gt;Single Point of Failure!]
+
+    LB --&gt; S1[Server 1]
+    LB --&gt; S2[Server 2]
+    LB --&gt; S3[Server 3]
+
+    Problem[❌ SPOF&lt;br/&gt;❌ Limited capacity&lt;br/&gt;✅ Simple setup]
+
+    style LB fill:#f99</code></pre>
+<h4 id="strategy-3-active-passive-lb">Strategy 3: Active-Passive LB<a class="headerlink" href="#strategy-3-active-passive-lb" title="Permanent link">&para;</a></h4>
+<pre class="mermaid"><code>graph TB
+    Client[Clients] --&gt; VIP[Virtual IP&lt;br/&gt;10.0.0.100]
+
+    VIP --&gt; Active[Active LB&lt;br/&gt;Handles traffic&lt;br/&gt;Heartbeat every 1s]
+
+    Active -.-&gt;|Heartbeat| Passive[Passive LB&lt;br/&gt;Standby mode]
+
+    Passive -.-&gt;|Takes over if&lt;br/&gt;Active fails| VIP
+
+    Active --&gt; S1[Server 1]
+    Active --&gt; S2[Server 2]
+    Active --&gt; S3[Server 3]
+
+    style Active fill:#9f9
+    style Passive fill:#9cf</code></pre>
+<h4 id="strategy-4-active-active-lb-best">Strategy 4: Active-Active LB (Best)<a class="headerlink" href="#strategy-4-active-active-lb-best" title="Permanent link">&para;</a></h4>
+<pre class="mermaid"><code>graph TB
+    Client[Clients] --&gt; DNS[DNS&lt;br/&gt;Round-robin]
+
+    DNS --&gt; LB1[Load Balancer 1&lt;br/&gt;Handles 50% traffic]
+    DNS --&gt; LB2[Load Balancer 2&lt;br/&gt;Handles 50% traffic]
+
+    LB1 --&gt; Pool[Server Pool]
+    LB2 --&gt; Pool
+
+    Pool --&gt; S1[Server 1]
+    Pool --&gt; S2[Server 2]
+    Pool --&gt; S3[Server 3]
+    Pool --&gt; S4[Server 4]
+
+    Benefits[✅ No SPOF&lt;br/&gt;✅ Better capacity&lt;br/&gt;✅ Both LBs utilized]
+
+    style LB1 fill:#9f9
+    style LB2 fill:#9f9</code></pre>
+<h3 id="multi-tier-load-balancing">Multi-Tier Load Balancing<a class="headerlink" href="#multi-tier-load-balancing" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TB
+    Internet[Internet] --&gt; DNS[DNS&lt;br/&gt;Global Load Balancer]
+
+    DNS --&gt;|Geographic routing| US[US Region]
+    DNS --&gt;|Geographic routing| EU[EU Region]
+    DNS --&gt;|Geographic routing| ASIA[Asia Region]
+
+    US --&gt; US_L4[L4 Load Balancer&lt;br/&gt;AWS NLB]
+    EU --&gt; EU_L4[L4 Load Balancer&lt;br/&gt;AWS NLB]
+
+    US_L4 --&gt; US_L7[L7 Load Balancer&lt;br/&gt;AWS ALB]
+    EU_L4 --&gt; EU_L7[L7 Load Balancer&lt;br/&gt;AWS ALB]
+
+    US_L7 --&gt;|/api/*| US_API[API Servers]
+    US_L7 --&gt;|/static/*| US_CDN[CDN Servers]
+
+    EU_L7 --&gt;|/api/*| EU_API[API Servers]
+    EU_L7 --&gt;|/static/*| EU_CDN[CDN Servers]
+
+    style DNS fill:#9cf
+    style US_L4 fill:#9cf
+    style EU_L4 fill:#9cf
+    style US_L7 fill:#f9f
+    style EU_L7 fill:#f9f</code></pre>
+<h3 id="load-balancer-algorithms-deep-dive">Load Balancer Algorithms Deep Dive<a class="headerlink" href="#load-balancer-algorithms-deep-dive" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TD
+    Start{Select Algorithm}
+
+    Start --&gt;|Simple| RR[Round Robin&lt;br/&gt;S1→S2→S3→S1...]
+    Start --&gt;|Weighted| WRR[Weighted Round Robin&lt;br/&gt;S1: 3x, S2: 2x, S3: 1x]
+    Start --&gt;|Performance| LC[Least Connections&lt;br/&gt;Route to least busy]
+    Start --&gt;|Geographic| GEO[Geographic&lt;br/&gt;Route to nearest]
+    Start --&gt;|Sticky| HASH[Consistent Hash&lt;br/&gt;Same client → Same server]
+    Start --&gt;|Smart| AI[Least Response Time&lt;br/&gt;Track actual latency]
+
+    RR --&gt; Use1[Use: Equal capacity servers&lt;br/&gt;Simple workloads]
+    WRR --&gt; Use2[Use: Different server sizes&lt;br/&gt;e.g., 2x capacity server]
+    LC --&gt; Use3[Use: Long-lived connections&lt;br/&gt;WebSockets, databases]
+    GEO --&gt; Use4[Use: Global users&lt;br/&gt;Latency-sensitive apps]
+    HASH --&gt; Use5[Use: Session affinity needed&lt;br/&gt;Stateful apps]
+    AI --&gt; Use6[Use: Variable backend latency&lt;br/&gt;Optimal performance]
+
+    style RR fill:#9f9
+    style WRR fill:#9cf
+    style LC fill:#ff9
+    style HASH fill:#f9c</code></pre>
+<h3 id="health-checks">Health Checks<a class="headerlink" href="#health-checks" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant LB as Load Balancer
+    participant S1 as Server 1 (Healthy)
+    participant S2 as Server 2 (Unhealthy)
+    participant S3 as Server 3 (Healthy)
+
+    loop Every 5 seconds
+        LB-&gt;&gt;S1: GET /health
+        S1--&gt;&gt;LB: 200 OK
+
+        LB-&gt;&gt;S2: GET /health
+        S2--&gt;&gt;LB: Timeout / 500 Error
+
+        LB-&gt;&gt;S3: GET /health
+        S3--&gt;&gt;LB: 200 OK
+    end
+
+    Note over LB,S2: S2 marked unhealthy&lt;br/&gt;Removed from rotation
+
+    LB-&gt;&gt;S1: Route traffic
+    LB-&gt;&gt;S3: Route traffic
+    LB-xS2: No traffic sent
+
+    Note over LB,S2: After 3 successful checks,&lt;br/&gt;S2 added back to rotation</code></pre>
+<h3 id="popular-load-balancers">Popular Load Balancers<a class="headerlink" href="#popular-load-balancers" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>mindmap
+  root((Load&lt;br/&gt;Balancers))
+    Hardware
+      F5 BIG-IP
+      Citrix ADC
+      A10 Networks
+      Expensive, powerful
+    Software
+      HAProxy
+      NGINX
+      Envoy
+      Traefik
+      Free, flexible
+    Cloud
+      AWS ELB/ALB/NLB
+      GCP Load Balancer
+      Azure Load Balancer
+      Cloudflare
+      Managed, scalable
+    Service Mesh
+      Istio
+      Linkerd
+      Consul
+      App-level routing</code></pre>
+<hr />
+<h2 id="quick-reference-tables">Quick Reference Tables<a class="headerlink" href="#quick-reference-tables" title="Permanent link">&para;</a></h2>
+<h3 id="when-to-use-what">When to Use What?<a class="headerlink" href="#when-to-use-what" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Solution</th>
+<th>Why?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Caching layer with 100 servers</strong></td>
+<td>Consistent Hashing</td>
+<td>Minimize cache invalidation on scale</td>
+</tr>
+<tr>
+<td><strong>REST API servers</strong></td>
+<td>Stateless + L7 LB</td>
+<td>Easy scaling, content routing</td>
+</tr>
+<tr>
+<td><strong>WebSocket gaming server</strong></td>
+<td>Stateful + L4 LB + Sticky sessions</td>
+<td>Maintain connection state</td>
+</tr>
+<tr>
+<td><strong>Global CDN</strong></td>
+<td>Multi-tier LB + Geo routing</td>
+<td>Low latency worldwide</td>
+</tr>
+<tr>
+<td><strong>Database connection pool</strong></td>
+<td>Consistent Hashing</td>
+<td>Reuse connections per shard</td>
+</tr>
+<tr>
+<td><strong>Microservices routing</strong></td>
+<td>Stateless + Service Mesh</td>
+<td>Dynamic routing, observability</td>
+</tr>
+</tbody>
+</table>
+<h3 id="technology-stack-examples">Technology Stack Examples<a class="headerlink" href="#technology-stack-examples" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Layer 4</th>
+<th>Layer 7</th>
+<th>Stateless Store</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AWS</strong></td>
+<td>Network Load Balancer (NLB)</td>
+<td>Application Load Balancer (ALB)</td>
+<td>ElastiCache Redis</td>
+</tr>
+<tr>
+<td><strong>GCP</strong></td>
+<td>TCP/UDP Load Balancer</td>
+<td>HTTP(S) Load Balancer</td>
+<td>Cloud Memorystore</td>
+</tr>
+<tr>
+<td><strong>Azure</strong></td>
+<td>Load Balancer</td>
+<td>Application Gateway</td>
+<td>Azure Cache for Redis</td>
+</tr>
+<tr>
+<td><strong>Open Source</strong></td>
+<td>HAProxy (TCP mode)</td>
+<td>NGINX, HAProxy (HTTP mode)</td>
+<td>Redis Cluster</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="practice-problems">Practice Problems<a class="headerlink" href="#practice-problems" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Design Instagram's feed cache</strong>: Use consistent hashing to distribute user feeds across 500 cache servers</li>
+<li><strong>Design Uber's matching service</strong>: Should it be stateful or stateless? Why?</li>
+<li><strong>Design a global API</strong>: Use multi-tier load balancing (DNS → L4 → L7)</li>
+<li><strong>Migrate from stateful to stateless</strong>: Plan the migration for a monolith with server-side sessions</li>
+</ol>
+<h2 id="resources">Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://www.akamai.com/us/en/multimedia/documents/technical-publication/consistent-hashing-and-random-trees-distributed-caching-protocols-for-relieving-hot-spots-on-the-world-wide-web-technical-publication.pdf">Consistent Hashing Paper</a></li>
+<li><a href="http://www.haproxy.org/">HAProxy Documentation</a></li>
+<li><a href="https://docs.nginx.com/nginx/admin-guide/load-balancer/">NGINX Load Balancing Guide</a></li>
+</ul>
+<h2 id="reflections">Reflections<a class="headerlink" href="#reflections" title="Permanent link">&para;</a></h2>
+<p>Consistent hashing is brilliant - it's all about minimizing the blast radius when systems change. The virtual nodes trick ensures even distribution. Stateless architecture is the foundation of modern cloud-native apps - any server can die without data loss. Layer 7 load balancers are slower but give you powerful routing capabilities.</p>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
+<ul>
+<li>[ ] Implement consistent hashing in code</li>
+<li>[ ] Draw architecture for Twitter's timeline cache with consistent hashing</li>
+<li>[ ] Compare AWS ALB vs NLB for a specific use case</li>
+<li>[ ] Design session management for a stateless e-commerce app</li>
+</ul>
+<hr />
+<p><a href="../">← Back to Daily Logs</a> | <a href="../../">Home</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/hawaijar" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
