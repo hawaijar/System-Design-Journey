@@ -2044,17 +2044,74 @@
     style L7 fill:#f9f</code></pre>
 <h3 id="deployment-strategies">Deployment Strategies<a class="headerlink" href="#deployment-strategies" title="Permanent link">&para;</a></h3>
 <h4 id="strategy-1-dns-round-robin">Strategy 1: DNS Round Robin<a class="headerlink" href="#strategy-1-dns-round-robin" title="Permanent link">&para;</a></h4>
+<p><strong>Yes! DNS can do load balancing by returning multiple IPs in rotating order</strong></p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant C1 as Client 1
+    participant C2 as Client 2
+    participant C3 as Client 3
+    participant DNS
+    participant S1 as Server 1.2.3.4
+    participant S2 as Server 1.2.3.5
+    participant S3 as Server 1.2.3.6
+
+    C1-&gt;&gt;DNS: Query: example.com?
+    DNS--&gt;&gt;C1: Response: [1.2.3.4, 1.2.3.5, 1.2.3.6]
+    C1-&gt;&gt;S1: Connect to first IP
+
+    C2-&gt;&gt;DNS: Query: example.com?
+    DNS--&gt;&gt;C2: Response: [1.2.3.5, 1.2.3.6, 1.2.3.4] (rotated!)
+    C2-&gt;&gt;S2: Connect to first IP
+
+    C3-&gt;&gt;DNS: Query: example.com?
+    DNS--&gt;&gt;C3: Response: [1.2.3.6, 1.2.3.4, 1.2.3.5] (rotated!)
+    C3-&gt;&gt;S3: Connect to first IP</code></pre>
+<p><strong>How DNS Round Robin Works:</strong></p>
 <pre class="mermaid"><code>graph TB
-    Client[Client] --&gt;|1. DNS Query&lt;br/&gt;example.com| DNS[DNS Server]
-    DNS --&gt;|2. Returns IPs&lt;br/&gt;Rotating list| Client
+    subgraph "DNS Server Configuration"
+        Config["example.com A records:&lt;br/&gt;1.2.3.4&lt;br/&gt;1.2.3.5&lt;br/&gt;1.2.3.6&lt;br/&gt;TTL: 60 seconds"]
+    end
 
-    Client --&gt;|3. Connect to IP| S1[Server 1&lt;br/&gt;1.2.3.4]
-    Client -.-&gt;|Next time| S2[Server 2&lt;br/&gt;1.2.3.5]
-    Client -.-&gt;|Next time| S3[Server 3&lt;br/&gt;1.2.3.6]
+    subgraph "Query 1"
+        Q1[Client asks:&lt;br/&gt;example.com] --&gt; R1[DNS returns:&lt;br/&gt;1.2.3.4 ← first&lt;br/&gt;1.2.3.5&lt;br/&gt;1.2.3.6]
+    end
 
-    Problem[❌ No health checks&lt;br/&gt;❌ Uneven distribution&lt;br/&gt;❌ DNS caching issues]
+    subgraph "Query 2"
+        Q2[Client asks:&lt;br/&gt;example.com] --&gt; R2[DNS returns:&lt;br/&gt;1.2.3.5 ← first&lt;br/&gt;1.2.3.6&lt;br/&gt;1.2.3.4]
+    end
 
-    style DNS fill:#ff9</code></pre>
+    subgraph "Query 3"
+        Q3[Client asks:&lt;br/&gt;example.com] --&gt; R3[DNS returns:&lt;br/&gt;1.2.3.6 ← first&lt;br/&gt;1.2.3.4&lt;br/&gt;1.2.3.5]
+    end
+
+    Config --&gt; Q1 &amp; Q2 &amp; Q3
+
+    style Config fill:#9cf</code></pre>
+<p><strong>Problems with DNS Round Robin:</strong></p>
+<pre class="mermaid"><code>graph TD
+    Issue1[❌ No Health Checks] --&gt; Explain1[DNS keeps returning&lt;br/&gt;dead server IPs]
+    Issue2[❌ Caching] --&gt; Explain2[Browsers/ISPs cache DNS&lt;br/&gt;for minutes/hours&lt;br/&gt;ignores TTL]
+    Issue3[❌ Uneven Load] --&gt; Explain3[Some clients make&lt;br/&gt;1000x more requests&lt;br/&gt;than others]
+    Issue4[❌ Geographic Routing] --&gt; Explain4[Cannot route users&lt;br/&gt;to nearest server]
+
+    style Issue1 fill:#f99
+    style Issue2 fill:#f99
+    style Issue3 fill:#f99
+    style Issue4 fill:#f99</code></pre>
+<p><strong>When DNS Round Robin Works:</strong>
+- ✅ Simple CDN distribution
+- ✅ Low-traffic sites
+- ✅ Stateless applications
+- ✅ When servers rarely fail</p>
+<p><strong>Real Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Try this command - you&#39;ll see multiple IPs!</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>$<span class="w"> </span>nslookup<span class="w"> </span>google.com
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Returns different IPs each time (round robin):</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># 142.250.185.206</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># 142.250.185.238</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># 142.250.185.174</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># ... etc</span>
+</code></pre></div></p>
 <h4 id="strategy-2-single-load-balancer">Strategy 2: Single Load Balancer<a class="headerlink" href="#strategy-2-single-load-balancer" title="Permanent link">&para;</a></h4>
 <pre class="mermaid"><code>graph TB
     Client[Clients] --&gt; LB[Load Balancer&lt;br/&gt;Single Point of Failure!]
