@@ -585,6 +585,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#virtual-nodes-ring-visualization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Virtual Nodes Ring Visualization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#consistent-hashing-algorithm" class="md-nav__link">
     <span class="md-ellipsis">
       Consistent Hashing Algorithm
@@ -1205,6 +1214,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#virtual-nodes-ring-visualization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Virtual Nodes Ring Visualization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#consistent-hashing-algorithm" class="md-nav__link">
     <span class="md-ellipsis">
       Consistent Hashing Algorithm
@@ -1649,38 +1667,59 @@
     style P1 fill:#f99
     style P2 fill:#ff9
     style P3 fill:#ff9</code></pre>
-<p><strong>Solution: Virtual Nodes - Each physical server gets multiple ring positions</strong></p>
-<pre class="mermaid"><code>graph TB
-    subgraph Server0["Server 0 (Physical)"]
-        S0_1[VNode1: 1000]
-        S0_2[VNode2: 5000]
-        S0_3[VNode3: 9000]
-    end
+<p><strong>Solution: Virtual Nodes - Distribute each server across multiple ring positions</strong></p>
+<h3 id="virtual-nodes-ring-visualization">Virtual Nodes Ring Visualization<a class="headerlink" href="#virtual-nodes-ring-visualization" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TD
+    Start([Ring Start: 0])
 
-    subgraph Server1["Server 1 (Physical)"]
-        S1_1[VNode1: 2000]
-        S1_2[VNode2: 6000]
-        S1_3[VNode3: 10000]
-    end
+    Start --&gt; S0V1[🟢 S0-VNode1&lt;br/&gt;Position: 1000]
+    S0V1 --&gt; K1[🔑 Key: user_alice&lt;br/&gt;Hash: 1500]
+    K1 --&gt; S1V1[🔵 S1-VNode1&lt;br/&gt;Position: 2000]
+    S1V1 --&gt; K2[🔑 Key: user_bob&lt;br/&gt;Hash: 2800]
+    K2 --&gt; S2V1[🟠 S2-VNode1&lt;br/&gt;Position: 3000]
+    S2V1 --&gt; K3[🔑 Key: user_charlie&lt;br/&gt;Hash: 4200]
+    K3 --&gt; S0V2[🟢 S0-VNode2&lt;br/&gt;Position: 5000]
+    S0V2 --&gt; K4[🔑 Key: user_dave&lt;br/&gt;Hash: 5500]
+    K4 --&gt; S1V2[🔵 S1-VNode2&lt;br/&gt;Position: 6000]
+    S1V2 --&gt; K5[🔑 Key: user_eve&lt;br/&gt;Hash: 6800]
+    K5 --&gt; S2V2[🟠 S2-VNode2&lt;br/&gt;Position: 7000]
+    S2V2 --&gt; K6[🔑 Key: user_frank&lt;br/&gt;Hash: 8500]
+    K6 --&gt; S0V3[🟢 S0-VNode3&lt;br/&gt;Position: 9000]
+    S0V3 --&gt; K7[🔑 Key: user_grace&lt;br/&gt;Hash: 9500]
+    K7 --&gt; S1V3[🔵 S1-VNode3&lt;br/&gt;Position: 10000]
+    S1V3 --&gt; K8[🔑 Key: user_henry&lt;br/&gt;Hash: 10500]
+    K8 --&gt; S2V3[🟠 S2-VNode3&lt;br/&gt;Position: 11000]
+    S2V3 --&gt; End([Wraps to 0...])
 
-    subgraph Server2["Server 2 (Physical)"]
-        S2_1[VNode1: 3000]
-        S2_2[VNode2: 7000]
-        S2_3[VNode3: 11000]
-    end
+    End -.-&gt; Start
 
-    Result[✅ Result: Each server&lt;br/&gt;handles ~33% of keys]
-
-    style S0_1 fill:#9f9
-    style S0_2 fill:#9f9
-    style S0_3 fill:#9f9
-    style S1_1 fill:#9cf
-    style S1_2 fill:#9cf
-    style S1_3 fill:#9cf
-    style S2_1 fill:#fc9
-    style S2_2 fill:#fc9
-    style S2_3 fill:#fc9
-    style Result fill:#9f9</code></pre>
+    style S0V1 fill:#9f9
+    style S0V2 fill:#9f9
+    style S0V3 fill:#9f9
+    style S1V1 fill:#9cf
+    style S1V2 fill:#9cf
+    style S1V3 fill:#9cf
+    style S2V1 fill:#fc9
+    style S2V2 fill:#fc9
+    style S2V3 fill:#fc9
+    style K1 fill:#ffd
+    style K2 fill:#ffd
+    style K3 fill:#ffd
+    style K4 fill:#ffd
+    style K5 fill:#ffd
+    style K6 fill:#ffd
+    style K7 fill:#ffd
+    style K8 fill:#ffd</code></pre>
+<p><strong>Key Mapping Rules:</strong>
+- 🔑 <strong>user_alice</strong> (1500) → Next server clockwise: 🟢 S0-VNode1 (2000) → <strong>Server 0</strong>
+- 🔑 <strong>user_bob</strong> (2800) → Next server clockwise: 🟠 S2-VNode1 (3000) → <strong>Server 2</strong>
+- 🔑 <strong>user_charlie</strong> (4200) → Next server clockwise: 🟢 S0-VNode2 (5000) → <strong>Server 0</strong>
+- 🔑 <strong>user_dave</strong> (5500) → Next server clockwise: 🔵 S1-VNode2 (6000) → <strong>Server 1</strong>
+- 🔑 <strong>user_eve</strong> (6800) → Next server clockwise: 🟠 S2-VNode2 (7000) → <strong>Server 2</strong>
+- 🔑 <strong>user_frank</strong> (8500) → Next server clockwise: 🟢 S0-VNode3 (9000) → <strong>Server 0</strong>
+- 🔑 <strong>user_grace</strong> (9500) → Next server clockwise: 🔵 S1-VNode3 (10000) → <strong>Server 1</strong>
+- 🔑 <strong>user_henry</strong> (10500) → Next server clockwise: 🟠 S2-VNode3 (11000) → <strong>Server 2</strong></p>
+<p><strong>Result:</strong> Keys evenly distributed across all physical servers!</p>
 <p><strong>Virtual Nodes:</strong> Each physical server gets multiple positions on the ring (typically 100-200)</p>
 <h3 id="consistent-hashing-algorithm">Consistent Hashing Algorithm<a class="headerlink" href="#consistent-hashing-algorithm" title="Permanent link">&para;</a></h3>
 <pre class="mermaid"><code>sequenceDiagram
