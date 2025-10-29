@@ -1875,26 +1875,36 @@
     style Layer3 fill:#9f9
     style Layer5 fill:#9f9</code></pre>
 <h3 id="abstractions-in-action">Abstractions in Action<a class="headerlink" href="#abstractions-in-action" title="Permanent link">&para;</a></h3>
-<pre class="mermaid"><code>graph LR
-    subgraph "Without Abstraction"
-        Code1[Application Code] --&gt; SQL1[Direct SQL:&lt;br/&gt;SELECT * FROM users&lt;br/&gt;WHERE id = ?]
+<pre class="mermaid"><code>graph TB
+    subgraph Without["❌ Without Abstraction"]
+        direction TB
+        Code1[Application Code]
+        Code1 --&gt; SQL1[Direct SQL Queries:&lt;br/&gt;SELECT * FROM users WHERE id = ?]
         SQL1 --&gt; DB1[(PostgreSQL)]
 
-        Problem1[❌ DB change = rewrite all queries&lt;br/&gt;❌ No caching logic&lt;br/&gt;❌ Scattered data access]
+        Problem1[Problems:&lt;br/&gt;• DB change = rewrite all queries&lt;br/&gt;• No caching logic&lt;br/&gt;• Scattered data access]
     end
 
-    subgraph "With Repository Pattern"
-        Code2[Application Code] --&gt; Repo[UserRepository&lt;br/&gt;getUser(id)&lt;br/&gt;saveUser(user)]
-        Repo --&gt; Cache{Check Cache}
+    subgraph With["✅ With Repository Pattern"]
+        direction TB
+        Code2[Application Code]
+        Code2 --&gt; Repo[UserRepository&lt;br/&gt;getUser id&lt;br/&gt;saveUser user]
+        Repo --&gt; Cache{Check&lt;br/&gt;Cache?}
         Cache --&gt;|Hit| Return1[Return from cache]
         Cache --&gt;|Miss| DB2[(PostgreSQL)]
         DB2 --&gt; UpdateCache[Update cache]
 
-        Benefit[✅ DB change = modify repository only&lt;br/&gt;✅ Caching centralized&lt;br/&gt;✅ Easy to test with mocks]
+        Benefit[Benefits:&lt;br/&gt;• DB change = modify repo only&lt;br/&gt;• Caching centralized&lt;br/&gt;• Easy to test with mocks]
     end
 
     style Code1 fill:#f99
-    style Code2 fill:#9f9</code></pre>
+    style SQL1 fill:#fcc
+    style DB1 fill:#f99
+    style Problem1 fill:#fee
+    style Code2 fill:#9f9
+    style Repo fill:#cfc
+    style DB2 fill:#9f9
+    style Benefit fill:#efe</code></pre>
 <h3 id="maintainability-practices">Maintainability Practices<a class="headerlink" href="#maintainability-practices" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
