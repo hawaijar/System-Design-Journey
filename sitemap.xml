@@ -2,42 +2,46 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://hawaijar.github.io/System-Design-Journey/</loc>
-         <lastmod>2025-10-25</lastmod>
+         <lastmod>2025-10-29</lastmod>
     </url>
     <url>
          <loc>https://hawaijar.github.io/System-Design-Journey/about/</loc>
-         <lastmod>2025-10-25</lastmod>
+         <lastmod>2025-10-29</lastmod>
     </url>
     <url>
          <loc>https://hawaijar.github.io/System-Design-Journey/resources/</loc>
-         <lastmod>2025-10-25</lastmod>
+         <lastmod>2025-10-29</lastmod>
     </url>
     <url>
          <loc>https://hawaijar.github.io/System-Design-Journey/daily/</loc>
-         <lastmod>2025-10-25</lastmod>
+         <lastmod>2025-10-29</lastmod>
     </url>
     <url>
          <loc>https://hawaijar.github.io/System-Design-Journey/daily/2024-10-24/</loc>
-         <lastmod>2025-10-25</lastmod>
+         <lastmod>2025-10-29</lastmod>
     </url>
     <url>
          <loc>https://hawaijar.github.io/System-Design-Journey/daily/2024-10-25/</loc>
-         <lastmod>2025-10-25</lastmod>
+         <lastmod>2025-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://hawaijar.github.io/System-Design-Journey/daily/2024-10-29/</loc>
+         <lastmod>2025-10-29</lastmod>
     </url>
     <url>
          <loc>https://hawaijar.github.io/System-Design-Journey/topics/</loc>
-         <lastmod>2025-10-25</lastmod>
+         <lastmod>2025-10-29</lastmod>
     </url>
     <url>
          <loc>https://hawaijar.github.io/System-Design-Journey/topics/building-blocks/</loc>
-         <lastmod>2025-10-25</lastmod>
+         <lastmod>2025-10-29</lastmod>
     </url>
     <url>
          <loc>https://hawaijar.github.io/System-Design-Journey/topics/interview-approach/</loc>
-         <lastmod>2025-10-25</lastmod>
+         <lastmod>2025-10-29</lastmod>
     </url>
     <url>
          <loc>https://hawaijar.github.io/System-Design-Journey/topics/scalability-patterns/</loc>
-         <lastmod>2025-10-25</lastmod>
+         <lastmod>2025-10-29</lastmod>
     </url>
 </urlset>
